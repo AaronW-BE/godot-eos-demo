@@ -2,3 +2,4 @@
 .godot/
 /android/
 scripts/eos_credentials.gd
+scripts/eos_credentials.gd.uid
