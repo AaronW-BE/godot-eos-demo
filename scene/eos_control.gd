@@ -126,10 +126,10 @@ func _on_btn_account_login_pressed() -> void:
 
     log_msg("account login...")
 
-    var url: String = ECOCredentials.OICD_AUTH_TOKEN_URL
+    var url: String = ECOCredentials.OIDC_AUTH_TOKEN_URL
     var headers = ["Content-Type: application/x-www-form-urlencoded"]
 
-    var client_id = ECOCredentials.OICD_CLIENT_ID
+    var client_id = ECOCredentials.OIDC_CLIENT_ID
     var body: String = "grant_type=password&client_id=%s&username=%s&password=%s" % [client_id, text_username.text, text_password.text]
 
     log_msg("body:  %s" % body)
