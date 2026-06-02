@@ -46,9 +46,10 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Username:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1244200756]
+[node name="text_username" type="LineEdit" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1244200756]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "admin"
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=1784773459]
 layout_mode = 2
@@ -65,9 +66,10 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Password:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=914960634]
+[node name="text_password" type="LineEdit" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=914960634]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "admin"
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer" unique_id=1194187780]
 layout_mode = 2
@@ -83,12 +85,12 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2" unique_id=1294382304]
 layout_mode = 2
 
-[node name="btn_login" type="Button" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=653916011]
+[node name="btn_account_login" type="Button" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=653916011]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-text = "Login"
+text = "Account Login"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer" unique_id=907331340]
 layout_mode = 2
@@ -153,5 +155,6 @@ size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
+[connection signal="pressed" from="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2/HBoxContainer/btn_account_login" to="." method="_on_btn_account_login_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2/btn_epic_login" to="." method="_on_btn_epic_login_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2/btn_epic_logout" to="." method="_on_btn_epic_logout_pressed"]

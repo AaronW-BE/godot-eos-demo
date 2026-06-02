@@ -114,3 +114,44 @@ func _on_btn_epic_login_pressed() -> void:
 
 func _on_btn_epic_logout_pressed() -> void:
     _loginout()
+
+
+func _on_btn_account_login_pressed() -> void:
+    var text_username: LineEdit = get_node("VBoxContainer/MarginContainer/HBoxContainer/text_username")
+    var text_password: LineEdit = get_node("VBoxContainer/MarginContainer2/HBoxContainer/text_password")
+
+    if text_username.text.is_empty() || text_password.text.is_empty():
+        log_err("username or password is null")
+        return
+
+    log_msg("account login...")
+
+    var url: String = ECOCredentials.OICD_AUTH_TOKEN_URL
+    var headers = ["Content-Type: application/x-www-form-urlencoded"]
+
+    var client_id = ECOCredentials.OICD_CLIENT_ID
+    var body: String = "grant_type=password&client_id=%s&username=%s&password=%s" % [client_id, text_username.text, text_password.text]
+
+    log_msg("body:  %s" % body)
+    print(body)
+    var http: HTTPRequest = HTTPRequest.new()
+    http.request_completed.connect(_on_login_request_completed.bind(http))
+    add_child(http)
+    var error = http.request(url, headers, HTTPClient.METHOD_POST, body)
+    log_msg("request... %s" % error)
+    if error != OK:
+        log_err("Send HTTP failed, %s" % error)
+        return
+    log_msg("send success, wait response")
+
+func _on_login_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray, http_node: HTTPRequest) -> void:
+    log_msg("response")
+    http_node.queue_free()
+    
+    if result != HTTPRequest.RESULT_SUCCESS:
+        log_err("网络请求内部错误")
+        return
+        
+    log_msg("服务器响应码: %s" % response_code)
+    var response_text = body.get_string_from_utf8()
+    log_msg("服务器返回内容: %s" % response_text)
