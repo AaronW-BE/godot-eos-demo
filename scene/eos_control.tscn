@@ -10,3 +10,148 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dpq12")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=376900349]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -191.5
+offset_top = -70.5
+offset_right = 191.5
+offset_bottom = 70.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1400208750]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Login"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1659273724]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=151360475]
+layout_mode = 2
+
+[node name="Username" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=2075497394]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Username:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1244200756]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=1784773459]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2" unique_id=1271417497]
+layout_mode = 2
+
+[node name="Username" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1990623608]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Password:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=914960634]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer" unique_id=1194187780]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer3" unique_id=335884355]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer" unique_id=1139968349]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2" unique_id=1294382304]
+layout_mode = 2
+
+[node name="btn_login" type="Button" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=653916011]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Login"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer" unique_id=907331340]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer3/VBoxContainer/HBoxContainer2" unique_id=95798190]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Epic Account id: "
+horizontal_alignment = 1
+
+[node name="text_epic_uid" type="Label" parent="VBoxContainer/MarginContainer3/VBoxContainer/HBoxContainer2" unique_id=1105369381]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Not login"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer" unique_id=1221971221]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer" unique_id=395192709]
+layout_mode = 2
+
+[node name="btn_epic_login" type="Button" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2" unique_id=285893311]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Epic Account Login"
+
+[node name="btn_epic_logout" type="Button" parent="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2" unique_id=705882355]
+layout_mode = 2
+text = "Logout epic"
+
+[node name="Panel" type="Panel" parent="." unique_id=505460851]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 609.0
+offset_bottom = 398.0
+
+[node name="ColorRect" type="ColorRect" parent="Panel" unique_id=1341718421]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.14767182, 0.14767179, 0.14767179, 0.16862746)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel" unique_id=1000870610]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="text_debug" type="RichTextLabel" parent="Panel/ScrollContainer" unique_id=1926881835]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2/btn_epic_login" to="." method="_on_btn_epic_login_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer3/VBoxContainer/MarginContainer/HBoxContainer2/btn_epic_logout" to="." method="_on_btn_epic_logout_pressed"]
