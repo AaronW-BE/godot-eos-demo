@@ -1,5 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-scripts/eos_credentials.gd
-scripts/eos_credentials.gd.uid
+/build/
+/Build/
+
+scripts/credentials.gd
+scripts/credentials.gd.uid
