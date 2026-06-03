@@ -149,9 +149,9 @@ func _on_login_request_completed(result: int, response_code: int, headers: Packe
     http_node.queue_free()
     
     if result != HTTPRequest.RESULT_SUCCESS:
-        log_err("网络请求内部错误")
+        log_err("Request failed")
         return
         
-    log_msg("服务器响应码: %s" % response_code)
+    log_msg("Response code: %s" % response_code)
     var response_text = body.get_string_from_utf8()
-    log_msg("服务器返回内容: %s" % response_text)
+    log_msg("Response content:\n %s \n" % response_text)
