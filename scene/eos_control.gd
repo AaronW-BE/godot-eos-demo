@@ -153,5 +153,22 @@ func _on_login_request_completed(result: int, response_code: int, headers: Packe
         return
         
     log_msg("Response code: %s" % response_code)
+    if response_code != 200:
+        log_err("status code is no OK")
+        return
+
     var response_text = body.get_string_from_utf8()
-    log_msg("Response content:\n %s \n" % response_text)
+
+    print(response_text)
+    
+    var json = JSON.new()
+    var parse_err: Error = json.parse(response_text)
+    if parse_err != OK:
+        log_err("parse response text error")
+        return
+
+    log_msg("Response content:\n %s \n" % json.data)
+
+    var token: String = json.data['access_token']
+
+    log_msg("[color=green]Login token: [/color] %s" % token)
