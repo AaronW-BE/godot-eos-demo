@@ -4,5 +4,5 @@
 /build/
 /Build/
 
-scripts/credentials.gd
-scripts/credentials.gd.uid
+scripts/config.gd
+scripts/config.gd.uid

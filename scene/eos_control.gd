@@ -86,15 +86,15 @@ func _on_btn_epic_login_pressed() -> void:
 
     if epic_auth_credentials == null:
         var credentials = HCredentials.new()
-        credentials.product_name = Credentials.PRODUCT_NAME
-        credentials.product_version = Credentials.PRODUCT_VERSION
-        credentials.product_id = Credentials.PRODUCT_ID
-        credentials.sandbox_id = Credentials.SANDBOX_ID
-        credentials.deployment_id = Credentials.DEPLOYMENT_ID
-        credentials.client_id = Credentials.CLIENT_ID
-        credentials.client_secret = Credentials.CLIENT_SECRET
+        credentials.product_name = Config.PRODUCT_NAME
+        credentials.product_version = Config.PRODUCT_VERSION
+        credentials.product_id = Config.PRODUCT_ID
+        credentials.sandbox_id = Config.SANDBOX_ID
+        credentials.deployment_id = Config.DEPLOYMENT_ID
+        credentials.client_id = Config.CLIENT_ID
+        credentials.client_secret = Config.CLIENT_SECRET
 
-        credentials.encryption_key = Credentials.ENCRYPTION_KEY
+        credentials.encryption_key = Config.ENCRYPTION_KEY
 
         var setup_success := await HPlatform.setup_eos_async(credentials)
         if not setup_success:
@@ -126,10 +126,10 @@ func _on_btn_account_login_pressed() -> void:
 
     log_msg("account login...")
 
-    var url: String = Credentials.OIDC_AUTH_TOKEN_URL
+    var url: String = Config.OIDC_AUTH_TOKEN_URL
     var headers = ["Content-Type: application/x-www-form-urlencoded"]
 
-    var client_id = Credentials.OIDC_CLIENT_ID
+    var client_id = Config.OIDC_CLIENT_ID
     var body: String = "grant_type=password&client_id=%s&username=%s&password=%s" % [client_id, text_username.text, text_password.text]
 
     log_msg("body:  %s" % body)
