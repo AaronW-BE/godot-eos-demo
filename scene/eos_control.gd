@@ -74,40 +74,15 @@ func _on_auth_interface_login_callback(data: Dictionary):
 func _on_auth_interface_logout_callback(data: Dictionary):
     if data.result_code == EOS.Result.Success:
         log_msg("[color=green]Epic account logout success [/color]")
-        # 登出成功后，清空本地保存的 ID
         current_epic_account_id = null
         
-        # 这里可以触发其他的 UI 更新，比如切换回登录界面
     else:
         log_err("[color=red]Logout failed, code: %s" % data.result_code)
 
 func _on_btn_epic_login_pressed() -> void:
     HLog.log_level = HLog.LogLevel.INFO
 
-    if epic_auth_credentials == null:
-        var credentials = HCredentials.new()
-        credentials.product_name = Config.PRODUCT_NAME
-        credentials.product_version = Config.PRODUCT_VERSION
-        credentials.product_id = Config.PRODUCT_ID
-        credentials.sandbox_id = Config.SANDBOX_ID
-        credentials.deployment_id = Config.DEPLOYMENT_ID
-        credentials.client_id = Config.CLIENT_ID
-        credentials.client_secret = Config.CLIENT_SECRET
-
-        credentials.encryption_key = Config.ENCRYPTION_KEY
-
-        var setup_success := await HPlatform.setup_eos_async(credentials)
-        if not setup_success:
-            log_err("Failed to setup EOS. See logs for more details")
-            return
-        HPlatform.log_msg.connect(_on_eos_log_msg)
-        var log_res := HPlatform.set_eos_log_level(EOS.Logging.LogCategory.AllCategories, EOS.Logging.LogLevel.Info)
-        if not EOS.is_success(log_res):
-            log_err("Failed to set logging level")
-            return
-
-        epic_auth_credentials = credentials
-        HAuth.logged_in.connect(_on_logged_in)
+    _init_eos()
 
     _devauth_login()
 
@@ -169,6 +144,93 @@ func _on_login_request_completed(result: int, response_code: int, headers: Packe
 
     log_msg("Response content:\n %s \n" % json.data)
 
-    var token: String = json.data['access_token']
+    var token: String = json.data['id_token']
 
     log_msg("[color=green]Login token: [/color] %s" % token)
+
+    login_to_eos_with_oidc(token)
+
+
+func login_to_eos_with_oidc(id_token: String):
+    await _init_eos()
+    var credentials = EOS.Connect.Credentials.new()
+    credentials.token = id_token
+    credentials.type = EOS.ExternalCredentialType.OpenidAccessToken 
+    
+    var login_options = EOS.Connect.LoginOptions.new()
+    login_options.credentials = credentials
+    
+    IEOS.connect_interface_login_callback.connect(_on_connect_login_callback)
+    
+    EOS.Connect.ConnectInterface.login(login_options)
+
+func _on_connect_login_callback(data: Dictionary):
+    log_msg("eos login callback %s" % data)
+    if IEOS.connect_interface_login_callback.is_connected(_on_connect_login_callback):
+        IEOS.connect_interface_login_callback.disconnect(_on_connect_login_callback)
+        
+    log_msg("EOS Connect Login callback result code: %s" % data.result_code)
+    
+    match data.result_code:
+        EOS.Result.Success:
+            log_msg("[color=green]Login successful！Local User ID: %s[/color]" % data.local_user_id)
+            current_epic_account_id = data.local_user_id
+            epic_uid.text = data.local_user_id
+
+            
+        EOS.Result.InvalidUser:
+            log_msg("[color=yellow]Token EAS verify success，and need create epic user..[/color]")
+            _create_eos_user(data.continuance_token)
+            
+        EOS.Result.InvalidAuth:
+            log_err("Verify failed, JWKS mismatch or invalid!")
+            
+        _:
+            log_err("Other errors: %s" % data)
+
+
+func _create_eos_user(continuance_token) -> void:
+    var create_opts = EOS.Connect.CreateUserOptions.new()
+    create_opts.continuance_token = continuance_token
+    
+    IEOS.connect_interface_create_user_callback.connect(_on_create_user_callback)
+    EOS.Connect.ConnectInterface.create_user(create_opts)
+
+
+func _on_create_user_callback(data: Dictionary) -> void:
+    if IEOS.connect_interface_create_user_callback.is_connected(_on_create_user_callback):
+        IEOS.connect_interface_create_user_callback.disconnect(_on_create_user_callback)
+    
+    log_msg("create_user callback data: %s" % data)
+    
+    if data.result_code != EOS.Result.Success:
+        log_err("Register failed: %s" % data.result_code)
+        return
+    
+    log_msg("[color=green]Register success！Local User ID: %s[/color]" % data.local_user_id)
+
+func _init_eos() -> void:
+    if epic_auth_credentials == null:
+        var credentials = HCredentials.new()
+        credentials.product_name = Config.PRODUCT_NAME
+        credentials.product_version = Config.PRODUCT_VERSION
+        credentials.product_id = Config.PRODUCT_ID
+        credentials.sandbox_id = Config.SANDBOX_ID
+        credentials.deployment_id = Config.DEPLOYMENT_ID
+        credentials.client_id = Config.CLIENT_ID
+        credentials.client_secret = Config.CLIENT_SECRET
+
+        credentials.encryption_key = Config.ENCRYPTION_KEY
+
+        var setup_success := await HPlatform.setup_eos_async(credentials)
+        if not setup_success:
+            log_err("Failed to setup EOS. See logs for more details")
+            return
+        HPlatform.log_msg.connect(_on_eos_log_msg)
+        var log_res := HPlatform.set_eos_log_level(EOS.Logging.LogCategory.AllCategories, EOS.Logging.LogLevel.Info)
+        if not EOS.is_success(log_res):
+            log_err("Failed to set logging level")
+            return
+
+        epic_auth_credentials = credentials
+        HAuth.logged_in.connect(_on_logged_in)
